@@ -1,67 +1,70 @@
-const movies = new Map();
+// movies.ts
+const movies = new Map<string, { title: string; releaseYear: number; director: string; genre: string }>();
 const movieRatings = new Map<string, number[]>();
 
-
-function addMovie(id : string ,title : string ,releaseYear:number ,director:string ,genre :string){
-    if(movies.has(id)){
-       console.log( "Movie already exists");
-       return false;
+function addMovie(id: string, title: string, releaseYear: number, director: string, genre: string) {
+    if (movies.has(id)) {
+        return false;
     }
-    movies.set(id, {title, releaseYear, director, genre});
+    movies.set(id, { title, releaseYear, director, genre });
     return true;
 }
 
-function rateMovie(id:string, rating:number){
-    if(!movies.has(id)){
-        console.log("Movie not found");
-        return false
+function rateMovie(id: string, rating: number) {
+    if (!movies.has(id)) {
+        return false;
     }
-    if(!movieRatings.has(id)){
+    if (!movieRatings.has(id)) {
         movieRatings.set(id, []);
     }
     movieRatings.get(id)!.push(rating);
     return true;
 }
 
-function getName(id:string){
-    return movies.get(id)?.title;
+function getName(id: string) {
+    return movies.get(id)?.title ?? null;
 }
 
-function getAverageRating(id:string){
+function getAverageRating(id: string) {
     const ratings = movieRatings.get(id);
-    if(!ratings || ratings.length === 0){
-        return null;
-    }
-    return ratings.reduce((a, b) => a + b) / ratings.length;
+    return ratings && ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : null;
 }
 
 function getTopRated() {
-    return Array.from(movies).sort((a, b) => {
-        const avgRatingA = getAverageRating(a[0]);
-        const avgRatingB = getAverageRating(b[0]);
-        return (avgRatingB ?? 0) - (avgRatingA ?? 0);
-    });
+    return Array.from(movies.entries())
+        .map(([id, movie]) => ({ ...movie, id, avgRating: getAverageRating(id) ?? 0 }))
+        .sort((a, b) => b.avgRating - a.avgRating);
 }
 
-function getMoviesBygenre(genre:string){
-    return Array.from(movies).filter(([id, movie]) => movie.genre === genre);
+function getMoviesBygenre(genre: string) {
+    return Array.from(movies.values()).filter(movie => movie.genre.toLowerCase() === genre.toLowerCase());
 }
 
-function getMoviesByDirector(director:string){
-    return Array.from(movies).filter(([id, movie]) => movie.director === director);
+function getMoviesByDirector(director: string) {
+    return Array.from(movies.values()).filter(movie => movie.director.toLowerCase() === director.toLowerCase());
 }
 
-function searchMoviesByKeyword(keyword:string){
-    return Array.from(movies).filter(([id, movie]) => movie.title.includes(keyword));
+function searchMoviesByKeyword(keyword: string) {
+    return Array.from(movies.values()).filter(movie => movie.title.toLowerCase().includes(keyword.toLowerCase()));
 }
 
-function getMovie(id:string){
-    return movies.get(id);
+function getMovie(id: string) {
+    return movies.get(id) ?? "Movie not found.";
 }
 
-function removeMovie(id:string){
-    movies.delete(id);
+function removeMovie(id: string) {
+    return movies.delete(id);
 }
 
-export {addMovie, rateMovie, getAverageRating, getTopRated,getName, getMoviesBygenre, getMoviesByDirector, searchMoviesByKeyword, getMovie, removeMovie};
-
+export {
+    addMovie,
+    rateMovie,
+    getAverageRating,
+    getTopRated,
+    getName,
+    getMoviesBygenre,
+    getMoviesByDirector,
+    searchMoviesByKeyword,
+    getMovie,
+    removeMovie
+};
