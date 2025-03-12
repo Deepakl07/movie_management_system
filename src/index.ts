@@ -1,4 +1,4 @@
-import {addMovie as addMovieService, rateMovie as rateMovieService, getAverageRating, getTopRated, getMoviesBygenre, getMoviesByDirector, searchMoviesByKeyword, getMovie, removeMovie} from './movies'
+import {addMovie as addMovieService, rateMovie as rateMovieService,getName, getAverageRating, getTopRated, getMoviesBygenre, getMoviesByDirector, searchMoviesByKeyword, getMovie, removeMovie} from './movies'
 import * as readline from 'readline';
 
 const rl = readline.createInterface({
@@ -29,6 +29,7 @@ function addMovie(){
                 rl.question("Enter director: ", (director) => {
                     rl.question("Enter genre: ", (genre) => {
                         addMovieService(id, title, parseInt(releaseYear), director, genre);
+                        console.log("Movie added successfully");
                         showMenu();
                     });
                 });
@@ -39,8 +40,9 @@ function addMovie(){
 
 function rateMovie(){
     rl.question("Enter movie id: ", (id) => {
-        rl.question("Enter rating: ", (rating) => {
+        rl.question("Enter rating[1-5]: ", (rating) => {
             rateMovieService(id, parseInt(rating));
+            console.log("Movie rated successfully");
             showMenu();
         });
     });
@@ -48,6 +50,7 @@ function rateMovie(){
 
 function getAverageRatingPrompt(){
     rl.question("Enter movie id: ", (id) => {
+        console.log(`Average rating ${getName(id)}: `);
         console.log(getAverageRating(id));
         showMenu();
     });
@@ -57,37 +60,45 @@ function handleInput(choice:string){
     switch(choice){
         case '1':
             addMovie();
+         
+           
             break;
         case '2':
             rateMovie();
+             
             break;
         case '3':
             getAverageRatingPrompt();
             break;
         case '4':
+            console.log("Top Rated Movies: \n")
             console.log(getTopRated());
             showMenu();
             break;
         case '5':
             rl.question("Enter genre: ", (genre) => {
+                console.log("Movies by genre: \n");
                 console.log(getMoviesBygenre(genre));
                 showMenu();
             });
             break;
         case '6':
             rl.question("Enter director: ", (director) => {
+                console.log("Movies by director: \n");
                 console.log(getMoviesByDirector(director));
                 showMenu();
             });
             break;
         case '7':
             rl.question("Enter keyword: ", (keyword) => {
+                console.log("Movies by keyword: \n");
                 console.log(searchMoviesByKeyword(keyword));
                 showMenu();
             });
             break;
         case '8':
             rl.question("Enter movie id: ", (id) => {
+                console.log("Movie: \n");
                 console.log(getMovie(id));
                 showMenu();
             });
@@ -95,6 +106,7 @@ function handleInput(choice:string){
         case '9':
             rl.question("Enter movie id: ", (id) => {
                 console.log(removeMovie(id));
+                console.log("Movie removed");
                 showMenu();
             });
             break;

@@ -19,6 +19,10 @@ function rateMovie(id:string, rating:number){
     movieRatings.get(id)!.push(rating);
 }
 
+function getName(id:string){
+    return movies.get(id)?.title;
+}
+
 function getAverageRating(id:string){
     const ratings = movieRatings.get(id);
     if(!ratings || ratings.length === 0){
@@ -55,5 +59,5 @@ function removeMovie(id:string){
     movies.delete(id);
 }
 
-export {addMovie, rateMovie, getAverageRating, getTopRated, getMoviesBygenre, getMoviesByDirector, searchMoviesByKeyword, getMovie, removeMovie};
+export {addMovie, rateMovie, getAverageRating, getTopRated,getName, getMoviesBygenre, getMoviesByDirector, searchMoviesByKeyword, getMovie, removeMovie};
 
