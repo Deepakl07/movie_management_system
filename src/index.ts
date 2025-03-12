@@ -7,7 +7,7 @@ const rl = readline.createInterface({
 });
 
 function showMenu(){
-    console.log("1. Add a movie");
+    console.log("1. Add a movie"); 
     console.log("2. Rate a movie");
     console.log("3. Get average rating of a movie");
     console.log("4. Get top rated movies");
@@ -28,8 +28,9 @@ function addMovie(){
             rl.question("Enter release year: ", (releaseYear) => {
                 rl.question("Enter director: ", (director) => {
                     rl.question("Enter genre: ", (genre) => {
-                        addMovieService(id, title, parseInt(releaseYear), director, genre);
+                     if (  addMovieService(id, title, parseInt(releaseYear), director, genre)){
                         console.log("Movie added successfully");
+                     }
                         showMenu();
                     });
                 });
@@ -41,8 +42,10 @@ function addMovie(){
 function rateMovie(){
     rl.question("Enter movie id: ", (id) => {
         rl.question("Enter rating[1-5]: ", (rating) => {
-            rateMovieService(id, parseInt(rating));
-            console.log("Movie rated successfully");
+            if(rateMovieService(id, parseInt(rating))){
+                console.log("Movie rated successfully");
+            }
+            
             showMenu();
         });
     });
@@ -60,12 +63,9 @@ function handleInput(choice:string){
     switch(choice){
         case '1':
             addMovie();
-         
-           
             break;
         case '2':
-            rateMovie();
-             
+            rateMovie();     
             break;
         case '3':
             getAverageRatingPrompt();
