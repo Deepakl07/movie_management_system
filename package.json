@@ -1,0 +1,16 @@
+{
+  "name": "movie_management_system",
+  "version": "0.0.0",
+  "description": "A movie management System",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mvg",
+  "license": "ISC",
+  "dependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
