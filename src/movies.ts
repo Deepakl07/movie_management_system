@@ -4,19 +4,23 @@ const movieRatings = new Map<string, number[]>();
 
 function addMovie(id : string ,title : string ,releaseYear:number ,director:string ,genre :string){
     if(movies.has(id)){
-        return "Movie already exists";
+       console.log( "Movie already exists");
+       return false;
     }
     movies.set(id, {title, releaseYear, director, genre});
+    return true;
 }
 
 function rateMovie(id:string, rating:number){
     if(!movies.has(id)){
-        return "Movie not found";
+        console.log("Movie not found");
+        return false
     }
     if(!movieRatings.has(id)){
         movieRatings.set(id, []);
     }
     movieRatings.get(id)!.push(rating);
+    return true;
 }
 
 function getName(id:string){
